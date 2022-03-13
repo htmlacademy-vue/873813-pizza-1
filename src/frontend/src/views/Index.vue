@@ -35,27 +35,19 @@
                 <h2 class="title title--small sheet__title">Выберите тесто</h2>
 
                 <div class="sheet__content dough">
-                  <label class="dough__input dough__input--light">
+                  <label
+                    v-for="item in dough"
+                    :key="item.id"
+                    :class="`dough__input dough__input--${getDough(item.id)}`"
+                  >
                     <input
                       type="radio"
                       name="dought"
-                      value="light"
-                      class="visually-hidden"
-                      checked
-                    />
-                    <b>Тонкое</b>
-                    <span>Из твердых сортов пшеницы</span>
-                  </label>
-
-                  <label class="dough__input dough__input--large">
-                    <input
-                      type="radio"
-                      name="dought"
-                      value="large"
+                      :value="getDough(item.id)"
                       class="visually-hidden"
                     />
-                    <b>Толстое</b>
-                    <span>Из твердых сортов пшеницы</span>
+                    <b>{{ item.name }}</b>
+                    <span>{{ item.description }}</span>
                   </label>
                 </div>
               </div>
@@ -66,34 +58,20 @@
                 <h2 class="title title--small sheet__title">Выберите размер</h2>
 
                 <div class="sheet__content diameter">
-                  <label for=""></label>
-                  <label class="diameter__input diameter__input--small">
+                  <label
+                    v-for="size in sizes"
+                    :key="size.id"
+                    :class="`diameter__input diameter__input--${getSize(
+                      size.id
+                    )}`"
+                  >
                     <input
                       type="radio"
                       name="diameter"
-                      value="small"
+                      :value="getSize(size.id)"
                       class="visually-hidden"
                     />
-                    <span>23 см</span>
-                  </label>
-                  <label class="diameter__input diameter__input--normal">
-                    <input
-                      type="radio"
-                      name="diameter"
-                      value="normal"
-                      class="visually-hidden"
-                      checked
-                    />
-                    <span>32 см</span>
-                  </label>
-                  <label class="diameter__input diameter__input--big">
-                    <input
-                      type="radio"
-                      name="diameter"
-                      value="big"
-                      class="visually-hidden"
-                    />
-                    <span>45 см</span>
+                    <span>{{ size.name }}</span>
                   </label>
                 </div>
               </div>
@@ -109,13 +87,17 @@
                   <div class="ingredients__sauce">
                     <p>Основной соус:</p>
 
-                    <label class="radio ingredients__input">
-                      <input type="radio" name="sauce" value="tomato" checked />
-                      <span>Томатный</span>
-                    </label>
-                    <label class="radio ingredients__input">
-                      <input type="radio" name="sauce" value="creamy" />
-                      <span>Сливочный</span>
+                    <label
+                      v-for="sauce in sauces"
+                      :key="sauce.id"
+                      class="radio ingredients__input"
+                    >
+                      <input
+                        type="radio"
+                        name="sauce"
+                        :value="getSauce(sauce.id)"
+                      />
+                      <span>{{ sauce.name }}</span>
                     </label>
                   </div>
 
@@ -128,9 +110,12 @@
                         :key="ingredient.id"
                         class="ingredients__item"
                       >
-                        <span :class="getClassName(ingredient.id)">{{
-                          ingredient.name
-                        }}</span>
+                        <span
+                          :class="`filling filling--${getIngredient(
+                            ingredient.id
+                          )}`"
+                          >{{ ingredient.name }}</span
+                        >
 
                         <div
                           class="counter counter--orange ingredients__counter"
@@ -198,7 +183,7 @@
 import misc from "@/static/misc.json";
 import pizza from "@/static/pizza.json";
 import user from "@/static/user.json";
-import classList from "@/static/classList.json";
+import additionalData from "@/static/additionalData.json";
 
 export default {
   name: "Index",
@@ -208,15 +193,24 @@ export default {
       misc,
       user,
       sizes: pizza.sizes,
-      sauses: pizza.sauses,
+      sauces: pizza.sauces,
       ingredients: pizza.ingredients,
       dough: pizza.dough,
-      classList,
+      additionalData,
     };
   },
   methods: {
-    getClassName(id) {
-      return classList[id];
+    getSize(id) {
+      return additionalData.sizes[id];
+    },
+    getIngredient(id) {
+      return additionalData.ingredients[id];
+    },
+    getDough(id) {
+      return additionalData.dough[id];
+    },
+    getSauce(id) {
+      return additionalData.sauces[id];
     },
   },
 };
